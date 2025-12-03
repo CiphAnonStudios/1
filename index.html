@@ -37,18 +37,13 @@
             border-radius: 5px;
             z-index: 30; 
         }
-        
-        #toggle-button:focus-visible {
-            outline: 2px solid dodgerblue; 
-            outline-offset: 2px;
-        }
 
         /* --- Iframe Container (Modal Window) Styles --- */
         #iframe-container {
             position: fixed; 
             top: 50%;
             left: 50%;
-            /* Note: overflow: visible is needed here so the floating images aren't cropped by the container edges */
+            /* overflow: visible is needed so the floating images aren't cropped by the container edges */
             overflow: visible; 
             transform: translate(-50%, -50%) scale(0.5) rotateX(45deg); 
             
@@ -57,8 +52,6 @@
             max-width: 90vw;
             max-height: 90vh;
             
-            /* The main iframe window appearance */
-            background-color: white; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             border-radius: 8px;
 
@@ -79,19 +72,20 @@
         /* --- Decorative Images Styles (Contained within #iframe-container) --- */
         .decor-image {
             position: absolute;
-            transition: transform 0.1s linear; /* Smooth reaction to mouse move */
-            pointer-events: none; /* Ensures they can't be clicked */
+            transition: transform 0.1s linear; 
+            pointer-events: none; 
+            z-index: 5; /* Z-index set lower than the iframe */
         }
 
         #decor-image-1 {
             width: 150px;
-            top: -50px; /* Positioned slightly outside the modal window's top edge */
+            top: -50px; 
             left: -50px;
         }
 
         #decor-image-2 {
             width: 80px;
-            bottom: -30px; /* Positioned slightly outside the modal window's bottom edge */
+            bottom: -30px; 
             right: -40px;
         }
 
@@ -109,10 +103,6 @@
             z-index: 15;
         }
 
-        #backdrop-overlay.is-visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
 
         /* --- Iframe Element Styles --- */
         #content-frame {
@@ -120,7 +110,11 @@
             height: 100%;
             border: none; 
             allow: "fullscreen";
-            /* We make the iframe element fill 100% of the container space inside the modal */
+            background-color: white; /* Ensure it has a white background */
+            position: relative;
+            z-index: 10; /* Z-index set higher than the images */
+            border-radius: 8px; /* Match modal container radius */
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
@@ -133,12 +127,12 @@
     </button>
 
     <div id="iframe-container">
-        <!-- REPLACE src ATTRIBUTES WITH YOUR ACTUAL IMAGE PATHS (e.g., abstract-shape.png) -->
-        <img src="path/to/your/image1.png" alt="Floating decor 1" class="decor-image" id="decor-image-1">
-        <img src="path/to/your/image2.png" alt="Floating decor 2" class="decor-image" id="decor-image-2">
-
         <!-- The iframe is within the container -->
         <iframe id="content-frame" src="YOUR_URL_HERE" title="External Content Frame"></iframe>
+        
+        <!-- The images are also within the container but behind the iframe -->
+        <img src="path/to/your/image1.png" alt="Floating decor 1" class="decor-image" id="decor-image-1">
+        <img src="path/to/your/image2.png" alt="Floating decor 2" class="decor-image" id="decor-image-2">
     </div>
 
     <script>
@@ -164,16 +158,12 @@
 
         // --- Parallax Effect Script for Decor Images ---
         const decorImages = document.querySelectorAll('.decor-image');
-        // This is a subtle effect since they are relatively close to the user's focus
-        const parallaxStrength = 10; 
+        const parallaxStrength = 10; // Subtle effect
 
         document.addEventListener('mousemove', (e) => {
             decorImages.forEach(image => {
-                // Calculate movement based on mouse position relative to center of screen
                 const offsetX = (e.clientX / window.innerWidth - 0.5) * parallaxStrength;
                 const offsetY = (e.clientY / window.innerHeight - 0.5) * parallaxStrength;
-
-                // Apply translation
                 image.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             });
         });

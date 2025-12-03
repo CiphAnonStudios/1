@@ -18,15 +18,41 @@
 
         /* --- Global Button Styling Improvements --- */
         .action-button, .iframe-control-btn {
+            /* Smooth transitions for hover/active states */
             transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-            cursor: pointer; border: none; border-radius: 5px; font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
         }
-        .action-button:hover, .iframe-control-btn:hover { background-color: #555; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transform: translateY(-1px); }
-        .action-button:active, .iframe-control-btn:active { transform: translateY(1px); background-color: #222; }
-        .action-button:focus-visible, .iframe-control-btn:focus-visible { outline: 2px solid dodgerblue; outline-offset: 2px; }
+
+        /* Hover effect: Subtle lift and shadow increase */
+        .action-button:hover, .iframe-control-btn:hover {
+            background-color: #555;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Active effect: Simulates a button press */
+        .action-button:active, .iframe-control-btn:active {
+            transform: translateY(1px); /* Pushes button down 1px */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            background-color: #222;
+        }
+        
+        .action-button:focus-visible, .iframe-control-btn:focus-visible {
+            outline: 2px solid dodgerblue; 
+            outline-offset: 2px;
+        }
+
 
         /* --- Main Toggle Button Styles (Fixed to the bottom right) --- */
-        #toggle-button { position: fixed; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #333; color: white; z-index: 40; }
+        #toggle-button {
+            position: fixed; 
+            bottom: 20px; right: 20px; padding: 10px 20px;
+            background-color: #333; color: white;
+            z-index: 40; 
+        }
 
         /* --- Iframe Container (Modal Window) Styles --- */
         #iframe-container {
@@ -38,26 +64,26 @@
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease-out, width 0s, height 0s, top 0s, left 0s;
             z-index: 20; 
         }
-        #iframe-container.is-visible { transform: translate(-50%, -50%) scale(1) rotateX(0deg); opacity: 1; pointer-events: auto; }
+        #iframe-container.is-visible {
+            transform: translate(-50%, -50%) scale(1) rotateX(0deg); 
+            opacity: 1; pointer-events: auto; 
+        }
+        
+        /* Styles applied when in native browser fullscreen mode */
         #iframe-container:-webkit-full-screen { width: 100% !important; height: 100% !important; top: 0 !important; left: 0 !important; transform: none !important; box-shadow: none !important; border-radius: 0 !important; }
         #iframe-container:full-screen { width: 100% !important; height: 100% !important; top: 0 !important; left: 0 !important; transform: none !important; box-shadow: none !important; border-radius: 0 !important; }
 
-        /* --- Decorative Images Styles (Now Circular) --- */
-        .decor-image {
-            position: absolute;
-            transition: transform 0.1s linear; 
-            pointer-events: none; 
-            z-index: 5;
-            /* Makes the images circular */
-            border-radius: 50%; 
-            /* Optional: subtle shadow for depth on the circle */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-        }
-       #decor-image-1 { width: 100vh; top: -145px; left: -190px; }
-       #decor-image-2 { width: 80vh; bottom: -130px; right: -170px; }
+        /* --- Decorative Images Styles --- */
+        .decor-image { position: absolute; transition: transform 0.1s linear; pointer-events: none; z-index: 5; }
+        #decor-image-1 { width: 100vh; top: -145px; left: -190px; }
+        #decor-image-2 { width: 80vh; bottom: -130px; right: -170px; }
 
         /* --- Backdrop Overlay --- */
-        #backdrop-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 15; }
+        #backdrop-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); opacity: 0; pointer-events: none;
+            transition: opacity 0.4s ease; z-index: 15;
+        }
 
         /* --- Iframe Element Styles --- */
         #content-frame {
@@ -67,9 +93,14 @@
         }
 
         /* --- OVERLAID BUTTONS CONTAINER & STYLES --- */
-        #iframe-controls { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 15; }
-        .iframe-control-btn { padding: 5px 10px; background-color: rgba(0, 0, 0, 0.6); color: white; font-size: 12px; }
-
+        #iframe-controls {
+            position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;
+            z-index: 15;
+        }
+        .iframe-control-btn {
+            padding: 5px 10px; background-color: rgba(0, 0, 0, 0.6); color: white;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
@@ -108,14 +139,23 @@
             toggleButtonEl.setAttribute('aria-expanded', isVisible);
         }
 
-        function reloadIframe() { iframeEl.src = iframeEl.src; }
+        function reloadIframe() {
+            iframeEl.src = iframeEl.src; 
+        }
+
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                if (iframeContainerEl.requestFullscreen) { iframeContainerEl.requestFullscreen(); } 
-                else if (iframeContainerEl.webkitRequestFullscreen) { iframeContainerEl.webkitRequestFullscreen(); }
+                if (iframeContainerEl.requestFullscreen) {
+                    iframeContainerEl.requestFullscreen();
+                } else if (iframeContainerEl.webkitRequestFullscreen) {
+                    iframeContainerEl.webkitRequestFullscreen();
+                }
             } else {
-                if (document.exitFullscreen) { document.exitFullscreen(); } 
-                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
             }
         }
 
@@ -132,3 +172,4 @@
     </script>
 </body>
 </html>
+

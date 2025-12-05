@@ -104,30 +104,26 @@
             font-size: 12px;
         }
 
-/* Container CSS (just for positioning the button relative to the image's starting position) */
+/* Container CSS */
 #blooket-cheats {
     position: relative; 
     display: inline-block; 
     max-width: 100%;
     bottom: -95px;
-    /* Removed the transition and transform rules from here */
 }
 
-/* The Image CSS (This is what we will animate) */
+/* The Image CSS (This is what we will animate and click) */
 #moving-image {
     width: 100%;
     height: auto;
-    cursor: pointer; 
-    position: relative; /* Essential for transform to work correctly */
-    z-index: 1; 
-    
-    /* Transition applied directly to the image */
+    cursor: pointer; /* Shows a hand cursor over the image */
+    position: relative; 
+    z-index: 1; /* Ensures image is below the button visually */
     transition: transform 0.5s ease; 
 }
 
-/* The NEW CSS class that JavaScript *toggles* on the #moving-image element */
+/* The CSS class for the destination */
 #moving-image.moved-right {
-    /* Only the image moves 510px to the right */
     transform: translateX(510px); 
 }
 
@@ -137,14 +133,18 @@
     top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
+    
+    /* !!! KEY FIX !!! Clicks pass through the button to the image below */
+    pointer-events: none; 
+
+    z-index: 10; /* Ensures the button is always on top visually */
+
+    /* Appearance styles */
     background-color: #4CAF50;
     color: white;
     padding: 10px 20px;
     border: none;
-    z-index: 10;
-    /* Removed pointer-events: none; so you can click the button if you want, 
-       but you can add it back if the image click handler needs to fire instead */
-    cursor: pointer;
+    /* Removed cursor: pointer here because clicks don't register on the button anymore */
 }
 
 
